@@ -7,6 +7,9 @@ document.addEventListener("keydown", function (evento) {
   }
 });
 
+//dimensiones del canvas
+var ancho = 700;
+var alto = 300;
 //Cargar imagenes
 var imgRex, imgNube, imgCactus, imgSuelo;
 function cargaImagenes() {
@@ -118,9 +121,7 @@ function gravedad() {
   }
 }
 /////////////////////
-//dimensiones del canvas
-var ancho = 700;
-var alto = 300;
+
 // para que el canvas inicie
 function inicializa() {
   canvas = document.querySelector("#canvas");
