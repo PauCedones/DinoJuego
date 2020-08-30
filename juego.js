@@ -3,7 +3,16 @@
 document.addEventListener("keydown", function (evento) {
   if (evento.keyCode == 32) {
     console.log("salta");
-    saltar();
+    if (nivel.muerto == false) {
+      saltar();
+    } else {
+      nivel.velocidad = 9;
+      nube.velocidad = 1;
+      nivel.muerto = false;
+      cactus.x = ancho + 100;
+      nube.x = ancho + 100;
+      nivel.marcador = 0;
+    }
   }
 });
 
@@ -36,7 +45,8 @@ var trex = {
 };
 var nivel = {
   velocidad: 9, //vel del suelo y el cactus
-  puntuacion: 0,
+  marcador: 0,
+  muerto: false,
 };
 var cactus = {
   x: ancho + 100, //no se va a ver el inicio, le damos la anchura del canvas + 100px mas para que no se vea
@@ -45,6 +55,7 @@ var cactus = {
 var nube = {
   x: 400,
   y: 100,
+  velocidad: 1,
 };
 var suelog = {
   x: 0,
@@ -80,6 +91,7 @@ function logicaCactus() {
   //se actualizara para que vuelva a aparecer por la derecha
   if (cactus.x < -100) {
     cactus.x = ancho + 100;
+    nivel.marcador++;
   } else {
     cactus.x -= nivel.velocidad;
   }
@@ -89,7 +101,7 @@ function logicaNube() {
   if (nube.x < -100) {
     nube.x = ancho + 100;
   } else {
-    nube.x -= 2;
+    nube.x -= nube.velocidad;
   }
 }
 //Logica SUELO
@@ -120,7 +132,29 @@ function gravedad() {
     }
   }
 }
-/////////////////////
+
+//LA COLISION
+function colision() {
+  if (cactus.x >= 100 && cactus.x <= 150) {
+    if (trex.y >= suelo - 25) {
+      nivel.muerto = true;
+      nivel.velocidad = 0;
+      nube.velocidad = 0;
+    }
+  }
+}
+
+// PUNTUACION
+function puntuacion() {
+  ctx.font = "38px impact";
+  ctx.fillStyle = "#555555";
+  ctx.fillText(`${nivel.marcador}`, 600, 50);
+  if (nivel.muerto == true) {
+    ctx.font = "38px impact";
+    ctx.fillText(`GAME OVER`, 240, 150);
+  }
+}
+////////////////////////////////////
 
 // para que el canvas inicie
 function inicializa() {
@@ -151,6 +185,7 @@ setInterval(function () {
 function principal() {
   borraCanvas();
   gravedad();
+  colision();
   logicaSuelo();
   dibujaSuelo();
   logicaCactus();
@@ -158,4 +193,5 @@ function principal() {
   dibujaCactus();
   dibujaNube();
   dibujaDino();
+  puntuacion();
 }
