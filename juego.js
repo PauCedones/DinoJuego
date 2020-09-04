@@ -114,8 +114,11 @@ function logicaSuelo() {
 }
 //Activamos y desactivamos el salto del dino
 function saltar() {
-  trex.saltando = true;
-  trex.vy = trex.salto;
+  if (trex.saltando == false) {
+    trex.vy = trex.salto;
+
+    trex.saltando = true;
+  }
 }
 //Aplicamos la gravedad del salto al dino cuando esta en el aire
 function gravedad() {
